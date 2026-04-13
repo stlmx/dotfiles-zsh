@@ -1,0 +1,29 @@
+# Machine-local overrides live here.
+# Copy this file to ~/.zshrc.local and edit as needed.
+
+# Example: greeting
+# echo "Welcome $(whoami) to $(hostname)!"
+
+# Example: machine-specific PATH additions
+# [ -d /usr/local/cuda-12/bin ] && export PATH="/usr/local/cuda-12/bin:$PATH"
+
+# Example: personal aliases
+# alias cddata='cd /mnt/afs/yourname'
+
+# Example: proxy helpers
+# start_proxy() {
+#   export HTTP_PROXY='http://127.0.0.1:7890'
+#   export HTTPS_PROXY="$HTTP_PROXY"
+#   export ALL_PROXY='socks5://127.0.0.1:7891'
+#   export http_proxy="$HTTP_PROXY"
+#   export https_proxy="$HTTPS_PROXY"
+#   export all_proxy="$ALL_PROXY"
+#   export NO_PROXY='localhost,127.0.0.1,::1'
+#   export no_proxy="$NO_PROXY"
+# }
+#
+# close_proxy() {
+#   unset ALL_PROXY HTTPS_PROXY HTTP_PROXY
+#   unset all_proxy https_proxy http_proxy
+#   unset NO_PROXY no_proxy
+# }

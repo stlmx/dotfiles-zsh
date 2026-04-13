@@ -16,6 +16,7 @@ fi
 export NODE_PATH="${NODE_PATH:+$NODE_PATH:}/usr/local/lib/node_modules"
 export TERM="${TERM:-xterm-256color}"
 export CONDA_CHANGEPS1=false
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 if command -v conda >/dev/null 2>&1; then
   __conda_setup="$(conda shell.zsh hook 2>/dev/null)"

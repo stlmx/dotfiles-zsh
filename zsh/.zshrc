@@ -40,8 +40,17 @@ if typeset -f toon >/dev/null 2>&1; then
   zstyle ':vcs_info:*' actionformats '%b|%a%c%u'
   zstyle ':vcs_info:*' formats '%b%c%u'
 
-  prompt_conda_segment() {
-    [[ -n "$CONDA_DEFAULT_ENV" && "$CONDA_DEFAULT_ENV" != "base" ]] || return 0
+  prompt_env_segment() {
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+      local env_name
+      env_name="$(basename "$VIRTUAL_ENV")"
+      if [[ "$env_name" == ".venv" ]]; then
+        env_name="$(basename "$(dirname "$VIRTUAL_ENV")")"
+      fi
+      print -n "%F{186}(${env_name})%f "
+      return 0
+    fi
+    [[ -n "$CONDA_DEFAULT_ENV" ]] || return 0
     print -n "%F{186}(${CONDA_DEFAULT_ENV})%f "
   }
 
@@ -50,7 +59,7 @@ if typeset -f toon >/dev/null 2>&1; then
     print -n " %F{222}git:%f %F{252}${vcs_info_msg_0_}%f"
   }
 
-  PROMPT=$'$(prompt_conda_segment)%F{177}%f %F{117}%n@%m%f %F{159}%3~%f$(prompt_vcs_segment)\n%(?.%{$fg_bold[green]%}.%{$fg_bold[red]%})❯%{$reset_color%} '
+  PROMPT=$'$(prompt_env_segment)%F{177}%f %F{117}%n@%m%f %F{159}%3~%f$(prompt_vcs_segment)\n%(?.%{$fg_bold[green]%}.%{$fg_bold[red]%})❯%{$reset_color%} '
   RPROMPT='%F{252}%D{%H:%M:%S}%f'
 fi
 

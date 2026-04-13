@@ -40,6 +40,14 @@ if typeset -f toon >/dev/null 2>&1; then
   zstyle ':vcs_info:*' actionformats '%b|%a%c%u'
   zstyle ':vcs_info:*' formats '%b%c%u'
 
+  prompt_icon() {
+    if [ "$(uname -s)" = "Darwin" ]; then
+      print -n ''
+    else
+      print -n '$'
+    fi
+  }
+
   prompt_conda_segment() {
     [[ -n "$CONDA_DEFAULT_ENV" && "$CONDA_DEFAULT_ENV" != "base" ]] || return 0
     print -n "%F{186}(${CONDA_DEFAULT_ENV})%f "
@@ -50,7 +58,7 @@ if typeset -f toon >/dev/null 2>&1; then
     print -n " %F{222}git:%f %F{252}${vcs_info_msg_0_}%f"
   }
 
-  PROMPT=$'$(prompt_conda_segment)%F{177}%f %F{117}%n@%m%f %F{159}%3~%f$(prompt_vcs_segment)\n%(?.%{$fg_bold[green]%}.%{$fg_bold[red]%})❯%{$reset_color%} '
+  PROMPT=$'$(prompt_conda_segment)%F{177}$(prompt_icon)%f %F{117}%n@%m%f %F{159}%3~%f$(prompt_vcs_segment)\n%(?.%{$fg_bold[green]%}.%{$fg_bold[red]%})❯%{$reset_color%} '
   RPROMPT='%F{252}%D{%H:%M:%S}%f'
 fi
 

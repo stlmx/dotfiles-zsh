@@ -5,7 +5,7 @@
 ## 功能
 
 - Starship 彩色 powerline 主题，默认 prompt 前留空一行，视觉间距更宽
-- SSH 登录 Linux 服务器时自动显示 `username@hostname`
+- 主机名不自动显示；需要时可在每台机器上用 `DOTFILES_PROMPT_HOST` 自定义短名字
 - zsh-autosuggestions 和 zsh-syntax-highlighting
 - Oh My Zsh 作为插件框架，Starship 负责 prompt
 - conda、virtualenv、nvm 的基础兼容
@@ -69,6 +69,14 @@ export HTTP_PROXY=http://127.0.0.1:7890
 export HTTPS_PROXY=http://127.0.0.1:7890
 alias ll='ls -lah'
 ```
+
+如果服务器自动 hostname 太长，可以自己定义 prompt 里的短名字：
+
+```zsh
+export DOTFILES_PROMPT_HOST=h100
+```
+
+不设置 `DOTFILES_PROMPT_HOST` 时，prompt 只显示用户名，不显示主机名。
 
 `install.sh` 第一次运行时会从 `zsh/.zshrc.local.example` 创建这个文件；后续不会覆盖。
 

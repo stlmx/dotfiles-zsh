@@ -10,6 +10,10 @@
 # Example: personal aliases
 # alias cddata='cd /mnt/afs/yourname'
 
+# Example: short prompt host label.
+# Leave this unset to hide the host segment.
+# export DOTFILES_PROMPT_HOST='h100'
+
 # Example: proxy helpers
 # start_proxy() {
 #   export HTTP_PROXY='http://127.0.0.1:7890'

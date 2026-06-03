@@ -8,7 +8,7 @@ format = """
 [](rose)\
 $os\
 $username\
-$hostname\
+${env_var.DOTFILES_PROMPT_HOST}\
 [](fg:rose bg:peach)\
 $directory\
 [](fg:peach bg:butter)\
@@ -56,16 +56,16 @@ style_user = "fg:ink bg:rose bold"
 style_root = "fg:ink bg:rose bold"
 format = "[ $user]($style)"
 
-[hostname]
-ssh_only = true
+[env_var.DOTFILES_PROMPT_HOST]
 style = "fg:ink bg:rose bold"
-format = "[@$hostname ]($style)"
+format = "[@$env_value ]($style)"
 
 [directory]
 style = "fg:ink bg:peach bold"
 format = "[ $path ]($style)"
-truncation_length = 1
+truncation_length = 0
 truncation_symbol = "…/"
+truncate_to_repo = false
 home_symbol = "~"
 
 [git_branch]

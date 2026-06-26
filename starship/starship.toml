@@ -11,12 +11,9 @@ $username\
 ${env_var.DOTFILES_PROMPT_HOST}\
 [](fg:rose bg:peach)\
 $directory\
-[](fg:peach bg:butter)\
 $git_branch\
 $git_status\
-[](fg:butter bg:mint)\
-[](fg:mint bg:sky)\
-[](fg:sky bg:lavender)\
+[](fg:peach bg:lavender)\
 $time\
 [ ](fg:lavender)\
 $line_break\
@@ -70,11 +67,11 @@ home_symbol = "~"
 
 [git_branch]
 symbol = ""
-style = "fg:ink bg:butter bold"
+style = "fg:ink bg:peach bold"
 format = "[ $symbol $branch ]($style)"
 
 [git_status]
-style = "fg:ink bg:butter bold"
+style = "fg:ink bg:peach bold"
 format = "[$all_status$ahead_behind ]($style)"
 
 [time]

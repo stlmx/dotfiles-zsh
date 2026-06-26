@@ -1,6 +1,6 @@
 "$schema" = "https://starship.rs/config-schema.json"
 
-add_newline = false
+add_newline = true
 command_timeout = 1000
 palette = "halfbit_pastel"
 
@@ -11,11 +11,15 @@ $username\
 ${env_var.DOTFILES_PROMPT_HOST}\
 [](fg:rose bg:peach)\
 $directory\
+[](fg:peach bg:butter)\
 $git_branch\
 $git_status\
-[](fg:peach bg:lavender)\
+[](fg:butter bg:mint)\
+[](fg:mint bg:sky)\
+[](fg:sky bg:lavender)\
 $time\
 [ ](fg:lavender)\
+$line_break\
 $character"""
 
 [palettes.halfbit_pastel]
@@ -66,11 +70,11 @@ home_symbol = "~"
 
 [git_branch]
 symbol = ""
-style = "fg:ink bg:peach bold"
+style = "fg:ink bg:butter bold"
 format = "[ $symbol $branch ]($style)"
 
 [git_status]
-style = "fg:ink bg:peach bold"
+style = "fg:ink bg:butter bold"
 format = "[$all_status$ahead_behind ]($style)"
 stashed = ""
 

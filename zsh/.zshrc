@@ -1,3 +1,10 @@
+# Avoid stacking prompt hooks when ~/.zshrc is sourced repeatedly.
+if [[ -n "${__DOTFILES_ZSHRC_LOADED:-}" ]]; then
+  setopt promptsubst
+  return
+fi
+typeset -g __DOTFILES_ZSHRC_LOADED=1
+
 export LANG="${LANG:-en_US.UTF-8}"
 export LC_ALL="${LC_ALL:-$LANG}"
 export LC_CTYPE="${LC_CTYPE:-$LANG}"
@@ -96,3 +103,5 @@ if [ -f "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
   ZSH_HIGHLIGHT_STYLES[command]='fg=green'
   ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
 fi
+
+setopt promptsubst

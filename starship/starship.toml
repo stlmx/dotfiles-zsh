@@ -16,7 +16,6 @@ $git_status\
 [](fg:peach bg:lavender)\
 $time\
 [ ](fg:lavender)\
-$line_break\
 $character"""
 
 [palettes.halfbit_pastel]
@@ -73,7 +72,7 @@ format = "[ $symbol $branch ]($style)"
 [git_status]
 style = "fg:ink bg:peach bold"
 format = "[$all_status$ahead_behind ]($style)"
-stashed = "≡"
+stashed = ""
 
 [time]
 disabled = false

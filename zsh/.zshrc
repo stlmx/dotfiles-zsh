@@ -97,6 +97,9 @@ else
   RPROMPT='%F{252}%D{%H:%M:%S}%f'
 fi
 
+# git 状态快照（Ctrl+X Ctrl+G 刷新），见 git-status-cache.zsh
+[ -r "${${(%):-%x}:A:h}/git-status-cache.zsh" ] && source "${${(%):-%x}:A:h}/git-status-cache.zsh"
+
 if [ -f "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
   source "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
   typeset -gA ZSH_HIGHLIGHT_STYLES
@@ -105,3 +108,11 @@ if [ -f "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
 setopt promptsubst
+
+# >>> otty shell integration >>>
+# Added by Otty — toggle in Settings > Shell > Shell Integration.
+# Inert unless launched by Otty (it sets $OTTY_SHELL_INTEGRATION).
+if [ -n "$OTTY_SHELL_INTEGRATION" ] && [ -r "$OTTY_SHELL_INTEGRATION/otty-integration.zsh" ]; then
+  . "$OTTY_SHELL_INTEGRATION/otty-integration.zsh"
+fi
+# <<< otty shell integration <<<

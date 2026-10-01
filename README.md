@@ -4,7 +4,7 @@
 
 ## 功能
 
-- Starship 彩色 powerline 主题，默认 prompt 前留空一行，视觉间距更宽
+- Starship 胶囊式主题（统一 Material 图标、内侧对称留白、时间右对齐），默认 prompt 前留空一行
 - 主机名不自动显示；需要时可在每台机器上用 `DOTFILES_PROMPT_HOST` 自定义短名字
 - zsh-autosuggestions 和 zsh-syntax-highlighting
 - Oh My Zsh 作为插件框架，Starship 负责 prompt
@@ -26,6 +26,21 @@ exec zsh
 ```bash
 chsh -s "$(command -v zsh)"
 ```
+
+## Git 状态快照
+
+提示符不再每次回车都扫描工作区，分支名实时显示，状态（`!` 修改、`?` 未跟踪、`+` 暂存、`⇡⇣` 领先/落后、`$` stash、绿色 `✓` 干净且与上游一致）是快照：
+
+- 进入一个新仓库时自动算一次；
+- 手动刷新：`mgit`（即 `git-refresh`）、`Ctrl+X Ctrl+G`，或在终端里连按两次 `Cmd+M`；
+- 不联网，`⇡⇣` 与 `✓` 以最近一次 `git fetch` 为准。
+
+`Cmd+M` 需要本地终端把它映射成 `ESC[9001~`：
+
+- Otty：`~/.config/otty/config.toml` 加 `keybind = "cmd+m=csi:9001~"`；
+- VS Code（含 Remote-SSH）：`keybindings.json` 加 `{"key": "cmd+m cmd+m", "command": "workbench.action.terminal.sendSequence", "args": {"text": "\u001b[9001~\u001b[9001~"}, "when": "terminalFocus"}`。
+
+需要 git ≥ 2.11（低版本只是不显示状态，不报错）。字体要求见下文「字体」。
 
 ## 在服务器上同步更新
 
@@ -50,6 +65,7 @@ exec zsh
 
 - `zsh/.zshrc`：通用 zsh 初始化，不放任何密钥
 - `zsh/.zshrc.local.example`：每台机器的私有配置模板
+- `zsh/git-status-cache.zsh`：git 状态快照与刷新快捷键（由 `.zshrc` 加载）
 - `starship/starship.toml`：Starship prompt 主题
 - `install.sh`：安装依赖并软链配置
 - `sync.sh`：拉取最新仓库并重新安装软链
@@ -109,7 +125,7 @@ sudo yum install zsh
 
 ## 字体
 
-Starship 主题用了 Nerd Font 图标。通过 SSH 连接服务器时，字体由你本机终端决定；本机 Ghostty 里使用 Maple Mono NF CN 这类 Nerd Font 即可正常显示。
+Starship 主题用了 Nerd Font 图标。通过 SSH 连接服务器时，字体由你本机终端决定；本机 Ghostty / Otty / VS Code 终端里使用 Maple Mono NF CN 这类 Nerd Font 即可正常显示。
 
 ## 卸载
 

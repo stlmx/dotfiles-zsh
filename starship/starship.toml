@@ -1,24 +1,23 @@
 "$schema" = "https://starship.rs/config-schema.json"
 
+# 胶囊式（内侧左右各留一格，圆角不压字）：每段独立圆角，段间留一格空；无 git 时不出现空色块；时间右对齐。
+# 图标统一用 Material Design 系（󰀵 󰘬 󰅐），大小一致。
 add_newline = true
 command_timeout = 1000
 palette = "halfbit_pastel"
 
 format = """
-[](rose)\
+[](fg:rose)\
 $os\
 $username\
 ${env_var.DOTFILES_PROMPT_HOST}\
-[](fg:rose bg:peach)\
+[ ](bg:rose)[](fg:rose) \
 $directory\
-[](fg:peach bg:butter)\
 $git_branch\
-$git_status\
-[](fg:butter bg:mint)\
-[](fg:mint bg:sky)\
-[](fg:sky bg:lavender)\
+${env_var.GITC_STATUS}\
+${env_var.GITC_SYNCED}\
+$fill\
 $time\
-[ ](fg:lavender)\
 $line_break\
 $character"""
 
@@ -36,10 +35,10 @@ red = "#ff6b6b"
 [os]
 disabled = false
 style = "fg:ink bg:rose"
-format = "[ $symbol]($style)"
+format = "[ $symbol ]($style)"
 
 [os.symbols]
-Macos = ""
+Macos = "󰀵"
 Linux = ""
 Ubuntu = "󰕈"
 Debian = "󰣚"
@@ -54,35 +53,43 @@ Alpine = ""
 show_always = true
 style_user = "fg:ink bg:rose bold"
 style_root = "fg:ink bg:rose bold"
-format = "[ $user]($style)"
+format = "[$user]($style)"
 
 [env_var.DOTFILES_PROMPT_HOST]
 style = "fg:ink bg:rose bold"
-format = "[@$env_value ]($style)"
+format = "[@$env_value]($style)"
 
 [directory]
 style = "fg:ink bg:peach bold"
-format = "[ $path ]($style)"
+format = "[](fg:peach)[ $path ]($style)[$read_only]($read_only_style)[](fg:peach)"
+read_only = " 󰌾"
+read_only_style = "fg:ink bg:peach"
 truncation_length = 0
 truncation_symbol = "…/"
 truncate_to_repo = false
 home_symbol = "~"
 
 [git_branch]
-symbol = ""
+symbol = "󰘬"
 style = "fg:ink bg:butter bold"
-format = "[ $symbol $branch ]($style)"
+format = " [](fg:butter)[ $symbol $branch ]($style)[](fg:butter)"
 
-[git_status]
-style = "fg:ink bg:butter bold"
-format = "[$all_status$ahead_behind ]($style)"
-stashed = ""
+# git 状态不再实时扫描：由 zsh/git-status-cache.zsh 生成快照（进入新仓库自动算一次，Ctrl+X Ctrl+G 手动刷新）
+[env_var.GITC_STATUS]
+style = "fg:butter bold"
+format = "[ $env_value]($style)"
+
+[env_var.GITC_SYNCED]
+format = "[ ✓](bold fg:green)"
+
+[fill]
+symbol = " "
 
 [time]
 disabled = false
 time_format = "%H:%M"
 style = "fg:ink bg:lavender bold"
-format = "[  $time ]($style)"
+format = "[](fg:lavender)[ 󰅐 $time ]($style)[](fg:lavender)"
 
 [line_break]
 disabled = false

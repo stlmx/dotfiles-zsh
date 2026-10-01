@@ -97,8 +97,15 @@ else
   RPROMPT='%F{252}%D{%H:%M:%S}%f'
 fi
 
-# git 状态快照（Ctrl+X Ctrl+G 刷新），见 git-status-cache.zsh
-[ -r "${${(%):-%x}:A:h}/git-status-cache.zsh" ] && source "${${(%):-%x}:A:h}/git-status-cache.zsh"
+# git 状态快照（mgit / Ctrl+X Ctrl+G / Cmd+M×2 刷新），见 git-status-cache.zsh
+# 依次找：.zshrc 软链指向的目录 → $DOTFILES_ZSH_DIR → ~/dotfiles-zsh（~/.zshrc 是拷贝而非软链时也能找到）
+() {
+  local f
+  for f in "${${(%):-%x}:A:h}" "${DOTFILES_ZSH_DIR:+$DOTFILES_ZSH_DIR/zsh}" "$HOME/dotfiles-zsh/zsh"; do
+    [[ -n $f && -r $f/git-status-cache.zsh ]] && { source "$f/git-status-cache.zsh"; return }
+  done
+  print -u2 "[dotfiles-zsh] 未找到 git-status-cache.zsh，mgit 不可用；请在 ~/dotfiles-zsh 运行 ./sync.sh"
+}
 
 if [ -f "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
   source "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

@@ -1,98 +1,97 @@
 "$schema" = "https://starship.rs/config-schema.json"
 
-# 胶囊式（内侧左右各留一格，圆角不压字）：每段独立圆角，段间留一格空；无 git 时不出现空色块；时间右对齐。
-# 图标统一用 Material Design 系（󰀵 󰘬 󰅐），大小一致。
+# 简约两行：不用底色；开头是系统图标（需 Nerd Font）和 用户名@主机名，目录、分支、git 状态各用一种颜色区分，
+# 右侧是耗时（超过 2 秒才出现）和时间，第二行只留输入符。
 add_newline = true
 command_timeout = 1000
-palette = "halfbit_pastel"
+palette = "quiet"
 
 format = """
-[](fg:rose)\
 $os\
 $username\
 ${env_var.DOTFILES_PROMPT_HOST}\
-[ ](bg:rose)[](fg:rose) \
+[ ](fg:host)\
 $directory\
 $git_branch\
 ${env_var.GITC_STATUS}\
 ${env_var.GITC_SYNCED}\
 $fill\
+$cmd_duration\
 $time\
 $line_break\
 $character"""
 
-[palettes.halfbit_pastel]
-ink = "#11131f"
-rose = "#f77fa5"
-peach = "#f7b383"
-butter = "#efe0a1"
-mint = "#9adf9b"
-sky = "#8cc9ec"
-lavender = "#b8c5ff"
+[palettes.quiet]
+host = "#f77fa5"
+path = "#8cc9ec"
+branch = "#b8c5ff"
+status = "#efe0a1"
 green = "#9de18d"
 red = "#ff6b6b"
+muted = "#7c8199"
 
+# 开头：系统图标 + 用户名 + @主机名（主机名由 ~/.zshrc.local 的 DOTFILES_PROMPT_HOST 决定，不设就不显示）；root 标红。
 [os]
 disabled = false
-style = "fg:ink bg:rose"
-format = "[ $symbol ]($style)"
+style = "fg:host"
+format = "[$symbol ]($style)"
 
 [os.symbols]
 Macos = "󰀵"
-Linux = ""
+Linux = ""
 Ubuntu = "󰕈"
 Debian = "󰣚"
 Fedora = "󰣛"
-CentOS = ""
+CentOS = ""
 Redhat = "󱄛"
 RedHatEnterprise = "󱄛"
 Arch = "󰣇"
-Alpine = ""
+Alpine = ""
 
 [username]
 show_always = true
-style_user = "fg:ink bg:rose bold"
-style_root = "fg:ink bg:rose bold"
+style_user = "bold fg:host"
+style_root = "bold fg:red"
 format = "[$user]($style)"
 
 [env_var.DOTFILES_PROMPT_HOST]
-style = "fg:ink bg:rose bold"
+style = "fg:host"
 format = "[@$env_value]($style)"
 
 [directory]
-style = "fg:ink bg:peach bold"
-format = "[](fg:peach)[ $path ]($style)[$read_only]($read_only_style)[](fg:peach)"
-read_only = " 󰌾"
-read_only_style = "fg:ink bg:peach"
+style = "bold fg:path"
+format = "[$path]($style)[$read_only]($read_only_style) "
+read_only = " ro"
+read_only_style = "fg:red"
 truncation_length = 0
-truncation_symbol = "…/"
 truncate_to_repo = false
 home_symbol = "~"
 
 [git_branch]
-symbol = "󰘬"
-style = "fg:ink bg:butter bold"
-format = " [](fg:butter)[ $symbol $branch ]($style)[](fg:butter)"
+style = "fg:branch"
+format = "[$branch]($style)"
 
-# git 状态不再实时扫描：由 zsh/git-status-cache.zsh 生成快照（进入新仓库自动算一次，Ctrl+X Ctrl+G 手动刷新）
+# git 状态不再实时扫描：由 zsh/git-status-cache.zsh 生成快照（进入新仓库自动算一次，mgit 或 Ctrl+X Ctrl+G 手动刷新）
 [env_var.GITC_STATUS]
-style = "fg:butter bold"
+style = "fg:status"
 format = "[ $env_value]($style)"
 
 [env_var.GITC_SYNCED]
-format = "[ ✓](bold fg:green)"
+format = "[ ✓](fg:green)"
 
 [fill]
 symbol = " "
 
+[cmd_duration]
+min_time = 2000
+style = "fg:status"
+format = "[$duration]($style) "
+
 [time]
 disabled = false
 time_format = "%H:%M"
-style = "fg:ink bg:lavender bold"
-format = "[](fg:lavender)[ 󰅐 $time ]($style)[](fg:lavender)"
-
-[line_break]
-disabled = false
+style = "fg:muted"
+format = "[$time]($style)"
 
 [character]
 success_symbol = "[❯](bold fg:green)"

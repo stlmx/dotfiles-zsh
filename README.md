@@ -1,11 +1,11 @@
 # dotfiles-zsh
 
-一套可以在 macOS 和 Linux 服务器之间同步的 zsh 配置。主提示符使用 Starship，风格接近截图里的彩色 powerline：系统图标、用户名、目录、git 分支/状态、时间，以及下一行的绿色输入符。
+一套可以在 macOS 和 Linux 服务器之间同步的 zsh 配置。主提示符使用 Starship，简约两行：系统图标、用户名@主机名、目录、git 分支/状态，右侧是耗时和时间，下一行是绿色输入符。
 
 ## 功能
 
-- Starship 胶囊式主题（统一 Material 图标、内侧对称留白、时间右对齐），默认 prompt 前留空一行
-- 主机名不自动显示；需要时可在每台机器上用 `DOTFILES_PROMPT_HOST` 自定义短名字
+- Starship 简约两行主题：不用底色，只靠文字颜色区分各段；只有开头的系统图标用 Nerd Font；上一条命令超过 2 秒才显示耗时，失败时输入符变红；默认 prompt 前留空一行
+- 用户名始终显示（root 标红）；主机名不自动显示，需要时可在每台机器上用 `DOTFILES_PROMPT_HOST` 自定义短名字
 - zsh-autosuggestions 和 zsh-syntax-highlighting
 - Oh My Zsh 作为插件框架，Starship 负责 prompt
 - conda、virtualenv、nvm 的基础兼容
@@ -125,7 +125,7 @@ sudo yum install zsh
 
 ## 字体
 
-Starship 主题用了 Nerd Font 图标。通过 SSH 连接服务器时，字体由你本机终端决定；本机 Ghostty / Otty / VS Code 终端里使用 Maple Mono NF CN 这类 Nerd Font 即可正常显示。
+Starship 主题开头的系统图标用了 Nerd Font。通过 SSH 连接服务器时，字体由你本机终端决定；本机 Ghostty / Otty / VS Code 终端里使用 Maple Mono NF CN 这类 Nerd Font 即可正常显示。
 
 ## 卸载
 

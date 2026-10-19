@@ -1,0 +1,8 @@
+# 本机专属的 tmux 设置，不进仓库。拷成 ~/.tmux.conf.local 再改（install.sh 第一次运行会自动拷一份）；
+# ~/.tmux.conf 末尾会加载它，改完在 tmux 里运行 tmux source-file ~/.tmux.conf 生效。
+
+# 例：服务器跑在 UTC，底栏时钟想看北京时间。%% 是因为 tmux 先做 strftime，再运行 #()。
+# set -g @clock '#(TZ=Asia/Shanghai date "+%%m-%%d %%H:%%M")'
+
+# 例：本机才有的脚本绑到快捷键（前缀 + a）
+# bind-key a run-shell "~/.local/bin/claude-next '#{session_name}:#{window_index}'"

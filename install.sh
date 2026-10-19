@@ -132,12 +132,24 @@ install_plugin https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.
 
 link_file "$REPO_ROOT/zsh/.zshrc" "$HOME/.zshrc"
 link_file "$REPO_ROOT/starship/starship.toml" "$HOME/.config/starship.toml"
+link_file "$REPO_ROOT/tmux/tmux.conf" "$HOME/.tmux.conf"
 
 if [ ! -f "$HOME/.zshrc.local" ]; then
   cp "$REPO_ROOT/zsh/.zshrc.local.example" "$HOME/.zshrc.local"
   log "created ~/.zshrc.local from example"
 else
   log "kept existing ~/.zshrc.local"
+fi
+
+if [ ! -f "$HOME/.tmux.conf.local" ]; then
+  cp "$REPO_ROOT/tmux/tmux.conf.local.example" "$HOME/.tmux.conf.local"
+  log "created ~/.tmux.conf.local from example"
+else
+  log "kept existing ~/.tmux.conf.local"
+fi
+
+if have tmux; then
+  log "tmux already running? reload it with: tmux source-file ~/.tmux.conf"
 fi
 
 if have zsh; then

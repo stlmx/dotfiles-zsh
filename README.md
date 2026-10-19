@@ -1,6 +1,6 @@
 # dotfiles-zsh
 
-一套可以在 macOS 和 Linux 服务器之间同步的 zsh 配置。主提示符使用 Starship，简约两行：系统图标、用户名@主机名、目录、git 分支/状态，右侧是耗时和时间，下一行是绿色输入符。
+一套可以在 macOS 和 Linux 服务器之间同步的 zsh 和 tmux 配置。主提示符使用 Starship，简约两行：系统图标、用户名@主机名、目录、git 分支/状态，右侧是耗时和时间，下一行是绿色输入符。tmux 底栏是暮紫色，见下文「tmux」。
 
 ## 功能
 
@@ -10,6 +10,7 @@
 - Oh My Zsh 作为插件框架，Starship 负责 prompt
 - conda、virtualenv、nvm 的基础兼容
 - 每台机器的私有配置放在 `~/.zshrc.local`，不会进入仓库
+- tmux：暮紫底栏，Claude Code 会话状态标记；每台机器的私有设置放在 `~/.tmux.conf.local`
 - `install.sh` 安装/软链配置，`sync.sh` 用于服务器上快速同步
 
 ## 一键安装
@@ -42,6 +43,17 @@ chsh -s "$(command -v zsh)"
 
 需要 git ≥ 2.11（低版本只是不显示状态，不报错）。字体要求见下文「字体」。
 
+## tmux
+
+`install.sh` 把 `tmux/tmux.conf` 软链到 `~/.tmux.conf`。需要 tmux ≥ 3.2 和支持真彩色的终端（Ghostty、iTerm2 等）；已经开着的 tmux 运行 `tmux source-file ~/.tmux.conf` 生效。
+
+- 前缀键是反引号 `` ` ``，要打出反引号本身就连按两次；开了鼠标；
+- 底栏是暮紫色：偏暗偏灰的紫色底，只比深色终端亮一点；米白字，会话名浅粉；你所在的窗口挖成终端底色，像浏览器的当前标签；其他窗口灰字，响过铃还没去看的变米白；
+- Claude Code 会话状态：窗口名前绿 `✓` = 答完在等你，黄 `?` = 等你授权，红 `!` = 撞了额度或接口出错。由 Claude Code 的钩子写窗口选项 `@claude`，没装钩子的机器上不显示；
+- 右边是当前窗格的标题和时钟。时钟默认是本机时区；服务器跑在 UTC 又想看别的时区，在 `~/.tmux.conf.local` 里改 `@clock`，例子见 `tmux/tmux.conf.local.example`。
+
+每台机器的私有设置（时区、本机才有的脚本快捷键等）放 `~/.tmux.conf.local`，`~/.tmux.conf` 最后加载它；`install.sh` 第一次运行时从示例创建，之后不覆盖。
+
 ## 在服务器上同步更新
 
 已经 clone 过之后，在任意服务器上执行：
@@ -67,6 +79,8 @@ exec zsh
 - `zsh/.zshrc.local.example`：每台机器的私有配置模板
 - `zsh/git-status-cache.zsh`：git 状态快照与刷新快捷键（由 `.zshrc` 加载）
 - `starship/starship.toml`：Starship prompt 主题
+- `tmux/tmux.conf`：tmux 配置（暮紫底栏）
+- `tmux/tmux.conf.local.example`：每台机器的 tmux 私有设置模板
 - `install.sh`：安装依赖并软链配置
 - `sync.sh`：拉取最新仓库并重新安装软链
 
@@ -138,7 +152,8 @@ Starship 主题开头的系统图标用了 Nerd Font。通过 SSH 连接服务�
 如果要恢复，删除软链并把备份文件拷回：
 
 ```bash
-rm ~/.zshrc ~/.config/starship.toml
+rm ~/.zshrc ~/.config/starship.toml ~/.tmux.conf
 cp ~/.dotfiles-zsh-backup-*/.zshrc ~/.zshrc
 cp ~/.dotfiles-zsh-backup-*/starship.toml ~/.config/starship.toml
+cp ~/.dotfiles-zsh-backup-*/.tmux.conf ~/.tmux.conf    # 原来有才有
 ```

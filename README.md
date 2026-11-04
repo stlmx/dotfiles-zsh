@@ -11,6 +11,7 @@
 - conda、virtualenv、nvm 的基础兼容
 - 每台机器的私有配置放在 `~/.zshrc.local`，不会进入仓库
 - tmux：暮紫底栏，Claude Code 会话状态标记；每台机器的私有设置放在 `~/.tmux.conf.local`
+- 命令行工具：eza 代替 `ls`、bat 代替 `cat`、fzf 模糊搜索、zoxide 目录跳转、Yazi 文件管理器、abtop 看 AI 会话，见下文「命令行工具」
 - `install.sh` 安装/软链配置，`sync.sh` 用于服务器上快速同步
 
 ## 一键安装
@@ -54,6 +55,26 @@ chsh -s "$(command -v zsh)"
 
 每台机器的私有设置（时区、本机才有的脚本快捷键等）放 `~/.tmux.conf.local`，`~/.tmux.conf` 最后加载它；`install.sh` 第一次运行时从示例创建，之后不覆盖。
 
+## 命令行工具
+
+`.zshrc` 里每个工具都先检查装没装，没装的机器上保持原生命令，不报错。`install.sh` 只软链它们的设置，不负责安装工具本身。
+
+Mac 上安装：
+
+```bash
+brew install eza bat fzf zoxide yazi sevenzip fd ripgrep resvg
+```
+
+Yazi 的视频、PDF、图片预览还用到 ffmpeg、poppler、imagemagick，普通版就够，不需要 `-full` 版。abtop 不在 Homebrew 里，从 [GitHub Releases](https://github.com/graykode/abtop/releases) 下载对应平台的压缩包，核对 `.sha256` 后把 `abtop` 放进 `~/.local/bin`。
+
+- eza：`ls` 目录在前、带图标；`ll` 详细列表，带表头和 Git 状态列；`lt` 两层树状图，跳过 `.gitignore` 里的文件。按时间排序用 `ll -s modified`，eza 的 `-t` 和 GNU `ls` 不一样
+- bat：`cat` 带语法高亮、行号和 Git 改动标记，配色 `ansi` 跟着终端皮肤走；接管道或重定向时自动退回纯文本；要复制纯文本用 `cat -p`。Ubuntu 上 apt 装的命令叫 `batcat`，会自动对上
+- fzf：`Ctrl+R` 模糊搜历史命令，`Ctrl+T` 模糊找文件，右边预览文件内容或目录树。需要 fzf ≥ 0.48，老版本自动跳过
+- zoxide：`z 关键词` 跳到常去的目录，`zi` 从列表里挑；`cd` 保持原样
+- extract：Oh My Zsh 插件，`x 文件名` 解压各种压缩包
+- Yazi：`y` 启动，`q` 退出时终端跟着进到最后停留的目录，`Q` 退出不跳。`d` 删到废纸篓，`D` 永久删除。设置在 `yazi/yazi.toml`：Mac 上文本文件按回车用 VS Code 打开，其他系统用 `$EDITOR`
+- abtop：`abtop` 打开 AI 编程会话面板（Claude Code、Codex）。设置在 `abtop/config.toml`，界面中文；在 abtop 里换配色或开关面板会写回这个文件。它会在后台调用 `claude --print` 给会话起标题，不经过 `.zshrc.local` 里的代理函数
+
 ## 在服务器上同步更新
 
 已经 clone 过之后，在任意服务器上执行：
@@ -81,6 +102,8 @@ exec zsh
 - `starship/starship.toml`：Starship prompt 主题
 - `tmux/tmux.conf`：tmux 配置（暮紫底栏）
 - `tmux/tmux.conf.local.example`：每台机器的 tmux 私有设置模板
+- `yazi/yazi.toml`：Yazi 设置（打开文本文件用什么）
+- `abtop/config.toml`：abtop 设置（中文界面）
 - `install.sh`：安装依赖并软链配置
 - `sync.sh`：拉取最新仓库并重新安装软链
 
@@ -152,7 +175,7 @@ Starship 主题开头的系统图标用了 Nerd Font。通过 SSH 连接服务�
 如果要恢复，删除软链并把备份文件拷回：
 
 ```bash
-rm ~/.zshrc ~/.config/starship.toml ~/.tmux.conf
+rm ~/.zshrc ~/.config/starship.toml ~/.tmux.conf ~/.config/yazi/yazi.toml ~/.config/abtop/config.toml
 cp ~/.dotfiles-zsh-backup-*/.zshrc ~/.zshrc
 cp ~/.dotfiles-zsh-backup-*/starship.toml ~/.config/starship.toml
 cp ~/.dotfiles-zsh-backup-*/.tmux.conf ~/.tmux.conf    # 原来有才有

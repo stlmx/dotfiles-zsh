@@ -1,0 +1,7 @@
+# Yazi 设置（install.sh 软链到 ~/.config/yazi/yazi.toml）
+# 文本文件按回车：Mac 上用 VS Code 打开，其他系统用 $EDITOR（没设就是 vi）；按 O 可以改选
+[opener]
+edit = [
+  { run = "code %s", orphan = true, desc = "VS Code", for = "macos" },
+  { run = "${EDITOR:-vi} %s", block = true, desc = "vi" },
+]

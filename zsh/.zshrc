@@ -25,7 +25,7 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 CASE_SENSITIVE="true"
-plugins=(git)
+plugins=(git extract)
 
 if [ -f "$ZSH/oh-my-zsh.sh" ]; then
   source "$ZSH/oh-my-zsh.sh"
@@ -119,7 +119,45 @@ setopt promptsubst
 # >>> otty shell integration >>>
 # Added by Otty — toggle in Settings > Shell > Shell Integration.
 # Inert unless launched by Otty (it sets $OTTY_SHELL_INTEGRATION).
-if [ -n "$OTTY_SHELL_INTEGRATION" ] && [ -r "$OTTY_SHELL_INTEGRATION/otty-integration.zsh" ]; then
+if [ -n "$ZSH_VERSION" ] && [ -n "$OTTY_SHELL_INTEGRATION" ] && [ -r "$OTTY_SHELL_INTEGRATION/otty-integration.zsh" ]; then
   . "$OTTY_SHELL_INTEGRATION/otty-integration.zsh"
 fi
 # <<< otty shell integration <<<
+
+# eza 代替 ls：图标、Git 状态、目录优先（没装 eza 的机器上保持原生 ls）
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza --icons=auto --group-directories-first'
+  alias ll='eza -lh --icons=auto --git --group-directories-first'
+  alias lt='eza --tree --level=2 --icons=auto --git-ignore'
+fi
+
+# bat 代替 cat：语法高亮、行号、Git 改动标记（Ubuntu 上 apt 装的叫 batcat；都没装就保持原生 cat）
+if command -v batcat >/dev/null 2>&1 && ! command -v bat >/dev/null 2>&1; then
+  alias bat='batcat'
+fi
+if command -v bat >/dev/null 2>&1 || command -v batcat >/dev/null 2>&1; then
+  export BAT_THEME="ansi"
+  alias cat='bat --paging=never'
+fi
+
+# fzf：Ctrl+R 模糊搜历史命令，Ctrl+T 模糊找文件（右边预览：文件用 bat，文件夹用 eza）
+if command -v fzf >/dev/null 2>&1; then
+  export FZF_CTRL_T_OPTS="--preview '[ -d {} ] && eza --tree --level=1 --icons=always --color=always {} || bat --color=always --style=numbers --line-range=:200 {}'"
+  eval "$(fzf --zsh 2>/dev/null)"
+fi
+
+# zoxide：z 关键词 跳到常去的目录，zi 从列表里挑
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+
+# Yazi：终端里的文件管理器。用 y 启动，按 q 退出时终端跟着进到最后停留的目录（Q 退出则不跳）
+if command -v yazi >/dev/null 2>&1; then
+  function y() {
+    local tmp cwd; tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+    command yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd" || builtin true
+    command rm -f -- "$tmp"
+  }
+fi

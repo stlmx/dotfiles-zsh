@@ -133,6 +133,8 @@ install_plugin https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.
 link_file "$REPO_ROOT/zsh/.zshrc" "$HOME/.zshrc"
 link_file "$REPO_ROOT/starship/starship.toml" "$HOME/.config/starship.toml"
 link_file "$REPO_ROOT/tmux/tmux.conf" "$HOME/.tmux.conf"
+link_file "$REPO_ROOT/yazi/yazi.toml" "$HOME/.config/yazi/yazi.toml"
+link_file "$REPO_ROOT/abtop/config.toml" "$HOME/.config/abtop/config.toml"
 
 if [ ! -f "$HOME/.zshrc.local" ]; then
   cp "$REPO_ROOT/zsh/.zshrc.local.example" "$HOME/.zshrc.local"

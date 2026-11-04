@@ -1,0 +1,3 @@
+# abtop 设置（install.sh 软链到 ~/.config/abtop/config.toml）
+# 在 abtop 里按 t 换配色、按 1–5 开关面板时，abtop 会把选择写回这个文件
+language = "zh"
